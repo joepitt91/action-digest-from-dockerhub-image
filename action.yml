@@ -1,0 +1,81 @@
+# SPDX-FileCopyrightText: 2025 Joe Pitt
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+---
+name: Get Current Digest from Tagged DockerHub Image
+author: Joe Pitt
+description: Get the current digest of the given image tag on DockerHub.
+inputs:
+  dockerhub_username:
+    description: The user to authenticate to the Docker Hub API as.
+    required: true
+  dockerhub_token:
+    description: The token to authenticate to the Docker Hub API with (must have read access).
+    required: true
+  namespace:
+    description: The namespace the repository is in. Defaults to "library".
+    required: false
+    default: library
+  repository:
+    description: The repository to search tags for.
+    required: true
+  tag:
+    description: The tag to look for. Defaults to "latest".
+    required: false
+    default: latest
+  os:
+    description: The OS platform to look for. Defaults to "linux".
+    required: false
+    default: linux
+  arch:
+    description: The architecture platform to look for. Defaults to "amd64".
+    required: false
+    default: amd64
+outputs:
+  digest:
+    description: The digest of the current image matching the search.
+    value: ${{ steps.get_digest.outputs.digest }}
+runs:
+  using: composite
+  steps:
+  - name: Install Dependencies
+    id: dependencies
+    run: pip install --quiet --upgrade -r ${{ github.action_path }}/requirements.txt
+    shell: bash
+  - name: Get Current Digest
+    id: get_digest
+    env:
+      GITHUB_ACTION_PATH: ${{ github.action_path }}
+      INPUT_arch: ${{ inputs.arch }}
+      INPUT_dockerhub_token: ${{ inputs.dockerhub_token }}
+      INPUT_dockerhub_username: ${{ inputs.dockerhub_username }}
+      INPUT_namespace: ${{ inputs.namespace }}
+      INPUT_os: ${{ inputs.os }}
+      INPUT_repository: ${{ inputs.repository }}
+      INPUT_tag: ${{ inputs.tag }}
+    shell: python
+    run: |
+      from os import getenv
+      from get_latest_version.dockerhub import get_current_image_digest
+
+      digest = get_current_image_digest(
+          username=getenv("INPUT_dockerhub_username"),
+          token=getenv("INPUT_dockerhub_token"),
+          namespace=getenv("INPUT_namespace"),
+          repository=getenv("INPUT_repository"),
+          tag=getenv("INPUT_tag"),
+          os=getenv("INPUT_os"),
+          arch=getenv("INPUT_arch"),
+      )
+
+      with open(getenv("GITHUB_OUTPUT"), "a", encoding="utf-8") as f:
+          f.write(f"digest={digest}\n")
+  - name: Print Digest
+    id: print
+    run: |
+      echo "docker.io/${{ inputs.namespace }}/${{ inputs.repository }}:${{ inputs.tag }} has digest ${{ steps.get_digest.outputs.digest }}"
+    shell: bash
+branding:
+  color: blue
+  icon: disc
