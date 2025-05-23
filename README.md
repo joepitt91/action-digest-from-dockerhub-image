@@ -29,7 +29,7 @@ Get the current digest of the given image tag on DockerHub.
 
 ```yaml
       - name: Get Current Digest for Latest Nextcloud AIO
-        id: version
+        id: digest
         uses: joepitt91/action-digest-from-dockerhub-image@v1
         with:
           dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
