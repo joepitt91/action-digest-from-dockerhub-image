@@ -1,12 +1,18 @@
+<!--
+SPDX-FileCopyrightText: 2025 Joe Pitt
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
 # Security Policy
 
 ## Security Advisories
 
-Any security avisories for this project will be published on the **Security** tab on GitHub.
+Any security advisories for this project will be published on the **Security** tab on GitHub.
 
 ## Reporting a Vulnerability
 
-If you discover a vulnerability please report this as soon as possible using the **Report a vulnerability** button on the **Security** tab. 
+If you discover a vulnerability please report this as soon as possible using the
+**Report a vulnerability** button on the **Security** tab. 
 
 Please include:
 
@@ -14,5 +20,7 @@ Please include:
 * Any proof of concept code.
 * Details of any workaround you are aware of to mitigate the vulnerability.
 * Details of any proposed fix, if you have one.
-* A proposed CVSSv3.1 score (with vectors) (See FIRST's [Common Vulnerability Scoring System Version 3.1 Calculator](https://www.first.org/cvss/calculator/3-1).
-* Details of if and how you would like to be credited with the discovery - we will accept a Name, GitHub username or email address.
+* A proposed CVSSv3.1 score (with vectors) (See FIRST's
+    [CVSSv3.1 Calculator](https://www.first.org/cvss/calculator/3-1)).
+* Details of if and how you would like to be credited with the discovery - we will accept a Name,
+    GitHub username or email address.
