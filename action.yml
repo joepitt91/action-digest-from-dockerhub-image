@@ -39,10 +39,6 @@ outputs:
 runs:
   using: composite
   steps:
-  - name: Install Dependencies
-    id: dependencies
-    run: pip3 install --quiet --upgrade -r ${{ github.action_path }}/requirements.txt
-    shell: bash
   - name: Get Current Digest
     id: get_digest
     env:
@@ -54,9 +50,15 @@ runs:
       INPUT_os: ${{ inputs.os }}
       INPUT_repository: ${{ inputs.repository }}
       INPUT_tag: ${{ inputs.tag }}
+      PYTHONPATH: ./lib
     shell: python
     run: |
       from os import getenv
+      from os.path import abspath, dirname, join
+      import sys
+
+      sys.path.insert(1,abspath(join(dirname(__file__), "lib")))
+
       from get_latest_version.dockerhub import get_current_image_digest
 
       digest = get_current_image_digest(
