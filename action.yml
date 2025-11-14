@@ -57,7 +57,7 @@ runs:
       from os.path import abspath, dirname, join
       import sys
 
-      sys.path.insert(1,abspath(join(dirname(__file__), "lib")))
+      sys.path.insert(1,abspath(join(getenv(GITHUB_ACTION_PATH), "lib")))
 
       from get_latest_version.dockerhub import get_current_image_digest
 
